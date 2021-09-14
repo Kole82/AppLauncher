@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="AppLauncher.Controls.Shortcut"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AppLauncher.Controls"
+             xmlns:converters="clr-namespace:AppLauncher.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter"/>
+    </UserControl.Resources>
+
+    <Grid Width="120"
+          Height="120"
+          Background="Transparent"
+          x:Name="grid">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Image Stretch="None"
+               Source="{Binding Icon, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+               HorizontalAlignment="Center"
+               Grid.Row="0"
+               Margin="4"
+               VerticalAlignment="Center">
+
+            <Image.InputBindings>
+                <MouseBinding MouseAction="LeftClick"
+                              Command="{Binding LaunchCommand}" />
+            </Image.InputBindings>
+        </Image>
+
+        <TextBlock Grid.Row="1"
+                   Text="{Binding Name}"
+                   Foreground="Snow"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   TextTrimming="CharacterEllipsis"
+                   TextWrapping="Wrap"/>
+
+        <Border Background="CornflowerBlue"
+                Margin="0 2 0 0"
+                Opacity="0"
+                Height="4"
+                x:Name="border"
+                Grid.Row="2" />
+
+        <Grid.Triggers>
+            <EventTrigger RoutedEvent="MouseEnter">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetName="border"
+                                         Storyboard.TargetProperty="Opacity"
+                                         To="1"
+                                         Duration="0:0:0.2"
+                                         AutoReverse="True"
+                                         RepeatBehavior="Forever" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+
+            <EventTrigger RoutedEvent="MouseLeave">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetName="border"
+                                         Storyboard.TargetProperty="Opacity"
+                                         Duration="0:0:0.2" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Grid.Triggers>
+    </Grid>
+</UserControl>

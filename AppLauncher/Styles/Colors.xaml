@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="TransparentDark">#90000000</Color>
+    <SolidColorBrush x:Key="TransparentDarkBrush" Color="{StaticResource TransparentDark}"/>
+
+    <Color x:Key="Transparent">#00000000</Color>
+    <SolidColorBrush x:Key="TransparentBrush" Color="{StaticResource Transparent}" />
+</ResourceDictionary>

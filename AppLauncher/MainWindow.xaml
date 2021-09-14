@@ -1,0 +1,84 @@
+﻿<Window x:Class="AppLauncher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AppLauncher"
+        xmlns:controls="clr-namespace:AppLauncher.Controls"
+        xmlns:mvvm="clr-namespace:AppLauncher.MvvmFramework"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"
+        
+        x:Name="MainWind"
+        
+        KeyDown="Window_KeyDown"
+        
+        WindowStyle="None"
+        WindowState="Maximized"
+        AllowsTransparency="True"
+        Background="{StaticResource TransparentDarkBrush}"
+        
+        ShowInTaskbar="False"
+        IsTabStop="False"
+        
+        Topmost="True">
+    
+    <Grid>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Control Buttons -->
+        <DockPanel Grid.Row="0">
+
+            <!-- Exit Button -->
+            <Button DockPanel.Dock="Left"
+                    Content="Exit"
+                    x:Name="btnExit"
+                    Click="btnExit_Click"
+                    Width="100"
+                    Margin="10"/>
+
+            <!-- Add-New-Shortcut Button -->
+            <Border Style="{StaticResource ButtonBorder}">
+
+                <TextBlock Style="{StaticResource ButtonText}"
+                           Text="+ Shortcut"/>
+
+                <Border.InputBindings>
+                    <MouseBinding MouseAction="LeftClick"
+                                  Command="{Binding ShortcutDialogCommand}"/>
+                </Border.InputBindings>
+            </Border>
+
+            <!-- Add-New-Folder Button -->
+            <Border Style="{StaticResource ButtonBorder}">
+
+                <TextBlock Style="{StaticResource ButtonText}"
+                           Text="+ Folder"/>
+
+                <Border.InputBindings>
+                    <MouseBinding MouseAction="LeftClick"
+                                  Command="{Binding FolderDialogCommand}"/>
+                </Border.InputBindings>
+            </Border>
+
+            <!--Add-New-Page-To-Right Button-->
+            <Border Style="{StaticResource ButtonBorder}">
+
+                <TextBlock Style="{StaticResource ButtonText}"
+                           Text="+ Page"/>
+
+                <Border.InputBindings>
+                    <MouseBinding MouseAction="LeftClick"
+                                  Command="{Binding AddPageCommand}"/>
+                </Border.InputBindings>
+            </Border>
+        </DockPanel>
+        
+        <!-- Main Content -->
+        <controls:Carousel Grid.Row="1"/>
+    </Grid>
+</Window>

@@ -1,0 +1,137 @@
+﻿<UserControl x:Class="AppLauncher.Controls.EditableTextBlock"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AppLauncher.Controls"
+             xmlns:viewmodels="clr-namespace:AppLauncher.ViewModels"
+             xmlns:mvvm="clr-namespace:AppLauncher.MvvmFramework"
+             xmlns:ap="clr-namespace:AppLauncher.AttachedProperties"
+             xmlns:convert="clr-namespace:AppLauncher.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <convert:BoolInvertConverter x:Key="BoolInvertConverter"/>
+    </UserControl.Resources>
+
+    <Grid Background="#00000000">
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.InputBindings>
+            <MouseBinding MouseAction="LeftClick"
+                          Command="{Binding EditCommand}"/>
+        </Grid.InputBindings>
+
+        <!-- Hover over to show edit button -->
+        <!-- Grid background must be set for this to work -->
+        <Grid.Triggers>
+            <EventTrigger RoutedEvent="MouseEnter">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetName="btnEdit"
+                                         Storyboard.TargetProperty="Opacity"
+                                         To="1"
+                                         Duration="0:0:0.3"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+
+            <EventTrigger RoutedEvent="MouseLeave">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetName="btnEdit"
+                                         Storyboard.TargetProperty="Opacity"
+                                         To="0"
+                                         Duration="0:0:0.3"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Grid.Triggers>
+
+        <!-- Edit Content -->
+        <TextBox Grid.Column="0"
+                 Text="{Binding NewText, UpdateSourceTrigger=PropertyChanged}"
+                 FontSize="36"
+                 Foreground="Gray"
+                 Background="White"
+                 Opacity="0"
+                 Padding="2"
+                 Margin="0 8 0 8"
+                 HorizontalAlignment="Center"
+                 ap:AttachedAnimations.FadeInOut="{Binding IsEditing}"
+                 ap:TextAttachedProperties.IsFocused="{Binding IsEditing}"/>
+
+        <!-- Content -->
+        <TextBlock Grid.Column="0"
+                   Text="{Binding OldText}"
+                   Foreground="Snow"
+                   FontSize="36"
+                   Margin="15 8"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   ap:AttachedAnimations.FadeInOut="{Binding IsEditing, Converter={StaticResource BoolInvertConverter}}"/>
+
+        <!-- Edit button container -->
+        <!-- We need this container as the opacity value is changed by two animations -->
+        <Grid Grid.Column="1"
+              Opacity="1"
+              ap:AttachedAnimations.FadeInOut="{Binding IsEditing, Converter={StaticResource BoolInvertConverter}}">
+
+            <!-- Edit button -->
+            <Button x:Name="btnEdit"
+                    Content="Edit"
+                    Opacity="0"
+                    Padding="8 5"
+                    Margin="0"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    Cursor="Hand" 
+                    Command="{Binding EditCommand}"/>
+        </Grid>
+
+        <!-- Save and Cancel buttons container -->
+        <StackPanel Grid.Column="1"
+                    Orientation="Horizontal"
+                    Opacity="0"
+                    ap:AttachedAnimations.FadeInOut="{Binding IsEditing}">
+
+            <StackPanel.Style>
+                <Style TargetType="{x:Type StackPanel}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsEditing}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+
+            <!-- Save button -->
+            <Button x:Name="btnSave"
+                    Content="V"
+                    Background="LightGreen"
+                    Padding="8 5"
+                    Margin="0"
+                    IsDefault="True"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    Cursor="Hand" 
+                    Command="{Binding SaveCommand}"/>
+
+            <!-- Cancel button -->
+            <Button x:Name="btnCancel"
+                    Content="X"
+                    Background="LightPink"
+                    Padding="8 5"
+                    Margin="0"
+                    IsCancel="True"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    Cursor="Hand" 
+                    Command="{Binding CancelCommand}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
