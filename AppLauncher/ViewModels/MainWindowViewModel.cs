@@ -1,5 +1,6 @@
 ﻿using AppLauncher.MvvmFramework;
 using Microsoft.Win32;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -18,7 +19,10 @@ namespace AppLauncher.ViewModels
 
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    IoC.Get<CarouselViewModel>().AddShortcutCommand.Execute(openFileDialog.FileName);
+                    App.Current.Dispatcher.BeginInvoke((ThreadStart)delegate ()
+                    {
+                        IoC.Get<CarouselViewModel>().AddShortcutCommand.Execute(openFileDialog.FileName);
+                    });
                 }
             });
         });

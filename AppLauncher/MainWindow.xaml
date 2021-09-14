@@ -21,7 +21,7 @@
         ShowInTaskbar="False"
         IsTabStop="False"
         
-        Topmost="True">
+        Topmost="False">
     
     <Grid>
         

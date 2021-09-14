@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using AppLauncher.MvvmFramework;
+using AppLauncher.ViewModels;
+using System.Windows;
 using System.Windows.Input;
 
 namespace AppLauncher
@@ -11,6 +13,8 @@ namespace AppLauncher
         public MainWindow()
         {
             InitializeComponent();
+
+            DataContext = IoC.Get<MainWindowViewModel>();
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
